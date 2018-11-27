@@ -43,7 +43,7 @@ router.post('/login', (req, res, next) => {
       if(err){
         res.json({success:false, msg:"can not connect to the DB" + err})
       }else{
-        client.query('SELECT id,username,password FROM users WHERE "username"=$1', [req.body.username], (err, user)=>{
+        client.query('SELECT * FROM users WHERE "username"=$1', [req.body.username], (err, user)=>{
           if(err){
              res.json({success: false, msg: err })
           }else{
@@ -69,7 +69,7 @@ router.get('/questions', (req, res, next) => {
        if (err) {
            res.json({success:false, msg:"can not connect to the DB" + err})
        }
-       client.query('SELECT question, answer FROM questions', function (err, result) {
+       client.query('SELECT * FROM questions', function (err, result) {
             done();
             if (err) {
                 console.log(err);
@@ -85,7 +85,7 @@ router.post('/questions', (req, res, next) => {
      if(err) {
       console.log("Can not connect to the DB" + err);
      }
-     client.query('INSERT INTO questions(id,"question") VALUES($1,$2)',[req.session.userId,req.body.question], (err, res)=>{
+     client.query('INSERT INTO questions("username","question") VALUES($1,$2)',[req.session.username,req.body.question], (err, res)=>{
       if (err) {
        return res.json({success: false, msg: 'can not insert question'})
     } else {
