@@ -36,6 +36,7 @@ router.post('/signup', (req, res, next) => {
 });
 
 router.post('/login', (req, res, next) => {
+  console.log(req.body)
   if (!req.body.username || !req.body.password) {
       res.json({success: false, msg: 'Please pass username and password.'})
   }else{
@@ -48,7 +49,7 @@ router.post('/login', (req, res, next) => {
              res.json({success: false, msg: err })
           }else{
             if(user.rows.length === 0){
-              res.json({ success: false, msg: 'Inter a valid username..'})
+              res.json({ success: false, msg: 'Inter a valid username..'});
             }else if(user.rows[0].password === req.body.password){
               req.session['username'] = user.rows[0].username;
               req.session['userId'] = user.rows[0].id;
@@ -64,7 +65,6 @@ router.post('/login', (req, res, next) => {
 });
 
 router.get('/questions', (req, res, next) => {
-  
   pool.connect(function (err, client, done) {
        if (err) {
            res.json({success:false, msg:"can not connect to the DB" + err})
